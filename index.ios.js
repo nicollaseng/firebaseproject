@@ -4,7 +4,8 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Button
 } from 'react-native';
 
 export default class firebaseTest extends Component {
@@ -17,11 +18,20 @@ export default class firebaseTest extends Component {
       storageBucket: "fir-teste-b8ba1.appspot.com",
       messagingSenderId: "415055409304"
     };
-    firebase.initializeApp(config);
+    Firebase.initializeApp(config);
+  }
+
+  saveData(){
+    var employee = Firebase.database().ref('employee')
+    employee.push().set({
+      name: 'Nicollas',
+      age: 27, 
+      email: 'nicollas@ctrlplay.com.br'
+    })
   }
   render() {
     return (
-      
+      <Button title="Save Data" onPress={() => this.saveData()}/>
     );
   }
 }
