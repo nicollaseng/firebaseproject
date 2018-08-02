@@ -23,31 +23,66 @@ export default class firebaseTest extends Component {
   }
 
   saveUser(){
-    var user = Firebase.auth()
-    var email = "nicollas@nicollas.com"
-    var passwrd = "ni45"
-    user.createUserWithEmailAndPassword(
-      email,
-      passwrd
-    ).catch(
-      error => {
-        var errorMessage = " "
-        if(error.code == "auth/weak-password") {
-          errorMessage = 'Senha com no minimo 6 caracteres'
-      }
-        alert(errorMessage)
-    }
-    )
+   var user = Firebase.auth()
+   var email = "nicollas@yahoo.com"
+   var pssword = "nicollas12345"
+   user.createUserWithEmailAndPassword(
+     email,
+     pssword
+   ).catch(
+     error => alert(error)
+   )
   }
   
+  checkUser(){
+    var user = Firebase.auth()
+    var actualUser = user.currentUser
+    user.onAuthStateChanged(
+      userState => {
+        if (userState){
+          alert("Logged in")
+        }else {
+          alert("logged off")
+        }
+      }
+    )
+  }
+
+  logoffUser(){
+    var user = Firebase.auth()
+    user.signOut()
+  }
+
+  loginUser(){
+    var pssword = "nicollas1234"
+    var email = "nicollas@yahoo.com"
+    var user = Firebase.auth()
+    user.signInWithEmailAndPassword(
+      email,pssword
+    ).catch(
+      error => alert(error)
+    )
+  }
+
+  //   if (actualUser){
+  //     alert("Logged in")
+  //   }else {
+  //     alert("logged off")
+  //   }
+  // }
   render() {
     return (
       <View>
-        <Button title="Save Data" onPress={() => this.saveUser()}/>
+        <Button title="Register User" onPress={() => this.saveUser()}/>
+        <Button title="Check User" onPress={() => this.checkUser()}/>
+        <Button title="Logoff User" onPress={() => this.logoffUser()}/>
+        <Button title="Login User" onPress={() => this.loginUser()}/>
       </View>
     );
   }
+
 }
+
 
 const styles = StyleSheet.create({
   
