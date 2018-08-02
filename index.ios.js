@@ -5,16 +5,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 
 export default class firebaseTest extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      pontos: []
-    }
-  }
   componentWillMount(){
     var config = {
       apiKey: "AIzaSyD-OI96EVch-zKrMjd6_sNhjgesbDUQNMQ",
@@ -27,29 +22,28 @@ export default class firebaseTest extends Component {
     Firebase.initializeApp(config);
   }
 
-  saveData(){
-    var employee = Firebase.database().ref('employee')
-    employee.push().set({
-      name: 'Nicollas'
-    })
+  saveUser(){
+    var user = Firebase.auth()
+    var email = "nicollas@nicollas.com"
+    var passwrd = "ni45"
+    user.createUserWithEmailAndPassword(
+      email,
+      passwrd
+    ).catch(
+      error => {
+        var errorMessage = " "
+        if(error.code == "auth/weak-password") {
+          errorMessage = 'Senha com no minimo 6 caracteres'
+      }
+        alert(errorMessage)
+    }
+    )
   }
-
-  listData(){
-    var pontos = Firebase.database().ref('pontos')
-    pontos.on('value', (snapshot) => {
-
-      var identifier = snapshot.val()
-      this.setState({
-        pontos: identifier 
-      })
-    } )
-  }
+  
   render() {
     return (
       <View>
-        <Button title="Save Data" onPress={() => this.saveData()}/>
-        <Button title="List Data" onPress={() => this.listData()}/>
-        <Text>{this.state.pontos}</Text>
+        <Button title="Save Data" onPress={() => this.saveUser()}/>
       </View>
     );
   }
